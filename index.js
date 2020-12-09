@@ -74,13 +74,12 @@ const gameMatchup = (data, details, homeGame) => {
         home_line_scores,
         away_line_scores
     } = data;
-    //hi
+
     const {
-        team,
         opponent
     } = details
 
-    const searchedTeam = team;
+    const searchedTeam = homeGame ? home_team : away_team;
 
     const gameSummary = document.createElement("div");
     gameSummary.classList.add("summary");
