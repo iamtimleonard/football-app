@@ -1,0 +1,17 @@
+body {
+    background-color: #33b478;
+}
+
+input {
+    display: block;
+}
+
+.season {
+    background-color: aliceblue;
+    margin: 4rem auto;
+}
+
+.details {
+    width: 50%;
+    margin: 0 auto;
+}
