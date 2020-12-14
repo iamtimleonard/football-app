@@ -1,3 +1,4 @@
+//Controlling user inputs
 const inputContent = {
     school: '',
     year: ''
@@ -54,11 +55,12 @@ const createCell = (stat, data, home) => {
             summary.remove();
         };
         gameMatchup(data, teamData, home);
+        document.querySelector(".details").classList.remove("hidden");
     });
     season.appendChild(cell);
 }
 
-//Populate matchup stats
+//Populate single game matchup stats
 const gameMatchup = (data, details, homeGame) => {
     const summaries = document.querySelectorAll(".summary");
     for (let summary of summaries) {
@@ -78,7 +80,7 @@ const gameMatchup = (data, details, homeGame) => {
     const {
         opponent
     } = details
-
+    //keep track of searched team if user changes input
     const searchedTeam = homeGame ? home_team : away_team;
 
     const gameSummary = document.createElement("div");
@@ -96,7 +98,7 @@ const gameMatchup = (data, details, homeGame) => {
     const resultHeading = document.createElement("p");
     resultHeading.textContent = (homeGame && home_points > away_points) || (!homeGame && away_points > home_points) ? `${searchedTeam} Victory` : `${searchedTeam} Loss`;
     gameSummary.appendChild(resultHeading);
-
+    //table showing scores for each quarter
     const scoreTable = document.createElement("table");
     scoreTable.classList.add("score-table")
     const tableHeading = document.createElement("thead");
@@ -135,7 +137,7 @@ const gameMatchup = (data, details, homeGame) => {
     const awayTotal = document.createElement("td");
     awayTotal.textContent = `${away_points}`;
     totalsRow.appendChild(awayTotal);
-
+    //option to search matchup history
     const searchMatchup = document.createElement("button");
     searchMatchup.textContent = "See matchup history";
     searchMatchup.classList.add("matchup");
@@ -147,7 +149,7 @@ const gameMatchup = (data, details, homeGame) => {
         makeMatchupHistory(data);
     });
 };
-
+//populate summary of matchup history
 const makeMatchupHistory = (data) => {
     const {
         team1,
@@ -166,15 +168,16 @@ const makeMatchupHistory = (data) => {
     matchupHistory.classList.add("summary")
     const detailsSection = document.querySelector(".details")
     detailsSection.appendChild(matchupHistory);
-    const matchupHeading = document.createElement("h1");
+    const matchupHeading = document.createElement("h3");
     matchupHeading.textContent = `${team1} vs. ${team2} Matchup history`
     matchupHistory.appendChild(matchupHeading);
     const record = document.createElement("p");
-    record.textContent = `Lifetime record: ${team1Wins} - ${team2Wins} - ${ties}`;
+    record.textContent = `${team1} has ${team1Wins} wins, ${team2Wins} losses, and ${ties} ties against ${team2}`;
     matchupHistory.appendChild(record);
     const fiveYearText = document.createElement("p");
     fiveYearText.textContent = `Past five games:`
     matchupHistory.appendChild(fiveYearText);
+    //get five previous game scores, if available
     for (let i = games.length > 5 ? games.length - 5 : 0; i < games.length; i++) {
         const {
             awayScore,
@@ -183,7 +186,7 @@ const makeMatchupHistory = (data) => {
             winner
         } = games[i];
         const gameDetail = document.createElement("p");
-        gameDetail.textContent = `${season}: ${homeScore} - ${awayScore}, ${winner} wins`;
+        gameDetail.textContent = `${season}: ${homeScore} - ${awayScore}, ${winner} win`;
         matchupHistory.appendChild(gameDetail);
     };
 }
@@ -212,6 +215,7 @@ const populateSeason = (season) => {
     };
 };
 
+
 const form = document.querySelector(".form");
 
 form.addEventListener("submit", (e) => {
@@ -224,5 +228,6 @@ form.addEventListener("submit", (e) => {
     for (let summary of summaries) {
         summary.remove();
     }
+    document.querySelector(".details").classList.add("hidden")
     getSeason(inputContent.year, inputContent.school).then(populateSeason)
 })

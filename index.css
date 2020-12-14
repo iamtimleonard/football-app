@@ -1,5 +1,7 @@
 body {
-    background-color: #33b478;
+    background-color: #7ec850;
+    background-image: url(http://www.transparenttextures.com/patterns/sprinkles.png);
+
 }
 
 input {
@@ -7,11 +9,34 @@ input {
 }
 
 .season {
-    background-color: aliceblue;
-    margin: 4rem auto;
+    background-color: whitesmoke;
+    margin: 0 .2rem;
 }
 
 .details {
-    width: 50%;
-    margin: 0 auto;
+    background-color: whitesmoke;
+    padding: 1rem 2rem;
+}
+
+.hidden {
+    display: none;
+}
+
+.container {
+    display: flex;
+    padding: 4rem 0;
+    flex-wrap: wrap;
+    width: 75%;
+    margin: 2rem auto;
+    justify-content: space-around;
+}
+
+table {
+    border: 2px solid black;
+}
+
+@media (max-width: 600px) {
+    .container {
+        width: 100%
+    }
 }
