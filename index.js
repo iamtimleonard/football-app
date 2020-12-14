@@ -34,7 +34,7 @@ async function getWeek(year, week, team) {
 };
 
 //Function to create a cell for season data
-const createCell = (stat, data, home) => {
+const createCell = (stat, data, home, win) => {
     const season = document.querySelector(".season");
     const cell = document.createElement("td");
     const {
@@ -43,9 +43,10 @@ const createCell = (stat, data, home) => {
         home_team
     } = data;
     cell.textContent = stat;
-    cell.setAttribute("stat", stat);
+    cell.style.cursor = "pointer";
     cell.classList.add("item");
     cell.classList.add(week);
+    cell.classList.add(win ? "win" : "loss");
     cell.addEventListener("click", async function (e) {
         const searchTeam = home ? home_team : away_team;
         const [teamData] = await getWeek(inputContent.year, week, searchTeam);
@@ -68,7 +69,7 @@ const gameMatchup = (data, details, homeGame) => {
     };
     const detailsSection = document.querySelector(".details")
     const {
-        week,
+        start_date,
         away_team,
         home_team,
         home_points,
@@ -76,6 +77,14 @@ const gameMatchup = (data, details, homeGame) => {
         home_line_scores,
         away_line_scores
     } = data;
+
+    const date = new Date(start_date)
+    const options = {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    };
 
     const {
         opponent
@@ -90,6 +99,10 @@ const gameMatchup = (data, details, homeGame) => {
     const summaryHeading = document.createElement("h3");
     summaryHeading.textContent = `${home_team} - ${home_points}, ${away_team} - ${away_points}`;
     gameSummary.appendChild(summaryHeading);
+
+    const dateHeading = document.createElement("h4");
+    dateHeading.textContent = date.toLocaleDateString(undefined, options);
+    gameSummary.appendChild(dateHeading);
 
     const scoreSummary = document.createElement("p");
     scoreSummary.textContent = homeGame ? `${home_team} at home` : `${away_team} away`
@@ -159,7 +172,6 @@ const makeMatchupHistory = (data) => {
         ties,
         games
     } = data;
-    console.log(data)
     const summaries = document.querySelectorAll(".summary");
     for (let summary of summaries) {
         summary.remove();
@@ -193,6 +205,7 @@ const makeMatchupHistory = (data) => {
 
 //Create table of season data
 const populateSeason = (season) => {
+    console.log(season);
     for (let game of season) {
         const season = document.querySelector(".season")
         const {
@@ -202,16 +215,17 @@ const populateSeason = (season) => {
             away_points,
             home_points,
         } = game;
-        let homeGame = home_team === inputContent.school ? true : false;
+        const homeGame = home_team === inputContent.school ? true : false;
+        const win = (homeGame && home_points > away_points) || (!homeGame && away_points > home_points) ? true : false;
         const row = document.createElement("tr");
         season.appendChild(row);
         row.classList.add("item");
         row.setAttribute("id", week);
-        createCell(week, game, homeGame);
-        createCell(home_team, game, homeGame);
-        createCell(away_team, game, homeGame);
-        createCell(home_points, game, homeGame);
-        createCell(away_points, game, homeGame);
+        createCell(week, game, homeGame, win);
+        createCell(home_team, game, homeGame, win);
+        createCell(away_team, game, homeGame, win);
+        createCell(home_points, game, homeGame, win);
+        createCell(away_points, game, homeGame, win);
     };
 };
 

@@ -1,21 +1,28 @@
 body {
     background-color: #7ec850;
     background-image: url(http://www.transparenttextures.com/patterns/sprinkles.png);
-
+    text-align: center;
 }
 
-input {
-    display: block;
+input,
+button {
+    border: none;
+    padding: .3rem;
+}
+
+button {
+    background-color: #989898;
 }
 
 .season {
     background-color: whitesmoke;
-    margin: 0 .2rem;
+    margin: .8rem .2rem;
 }
 
 .details {
     background-color: whitesmoke;
     padding: 1rem 2rem;
+    border-radius: 10px;
 }
 
 .hidden {
@@ -31,12 +38,40 @@ input {
     justify-content: space-around;
 }
 
-table {
+.details button {
+    margin-top: .5rem;
+}
+
+.win {
+    background-color: #00ff0080;
+}
+
+.loss {
+    background-color: #ff000080;
+}
+
+table,
+th,
+td {
     border: 2px solid black;
 }
 
-@media (max-width: 600px) {
+td,
+th {
+    padding: .5rem;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+@media (max-width: 690px) {
     .container {
         width: 100%
+    }
+
+    td,
+    th {
+        padding: .1rem;
     }
 }
