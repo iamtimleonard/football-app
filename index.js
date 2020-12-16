@@ -138,8 +138,8 @@ const gameMatchup = (data, homeGame) => {
         const row = document.createElement("tr")
         scoreTable.appendChild(row);
         createTextElement("td", `${i}`, row);
-        createTextElement("td", `${!home_line_scores[i-1] ? "No data" : home_line_scores[i-1]}`, row);
-        createTextElement("td", `${!away_line_scores[i-1] ? "No data" : away_line_scores[i-1]}`, row);
+        createTextElement("td", `${home_line_scores[i-1] == undefined ? "No data" : home_line_scores[i-1]}`, row);
+        createTextElement("td", `${away_line_scores[i-1] == undefined ? "No data" : away_line_scores[i-1]}`, row);
     }
     const totalsRow = document.createElement("tr");
     scoreTable.appendChild(totalsRow);
