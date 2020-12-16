@@ -122,4 +122,8 @@ table {
     th {
         padding: .1rem;
     }
+
+    .info {
+        padding: 0;
+    }
 }
