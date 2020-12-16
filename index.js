@@ -40,7 +40,6 @@ const removeItems = (targets) => {
 const createCell = (stat, data, home) => {
     const cell = document.createElement("td");
     const {
-        week,
         away_team,
         home_team
     } = data;
@@ -90,7 +89,7 @@ const formatDate = (date) => {
 }
 
 const printError = () => {
-    document.querySelector(".season-record").textContent = "Please enter a valid school and year";
+    document.querySelector(".season-record").textContent = "No data available: Please enter a valid school and year";
     return;
 };
 
