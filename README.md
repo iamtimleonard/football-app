@@ -1,6 +1,6 @@
 # College Football Scores Search App
 
-This app is designed using the api found at https://api.collegefootballdata.com/. Search Division I colleges and specify a season to retrieve the season results. Click through to see the game stats and matchup history between the two schools.
+This app is designed using the API found at https://api.collegefootballdata.com/. Search Division I colleges and specify a season to retrieve the season results. Click through to see the game stats and matchup history between the two schools.
 "Week" represents the FBS week, the date is given in the game breakdown.
 
 ## Deployment
@@ -10,7 +10,7 @@ There are no data for scores for each quarter before 2001 - the table in the gam
 ## Built With
 
 * Axios (https://github.com/axios/axios)
-* Swagger UI Api (https://api.collegefootballdata.com/)
+* Swagger UI API (https://api.collegefootballdata.com/)
 
 ## Contributing
 
