@@ -21,7 +21,10 @@ inputs.forEach((input) => {
 async function getSeason(year, team) {
     let {
         data
-    } = await axios.get(`https://api.collegefootballdata.com/games?year=${year}&seasonType=regular&team=${team}`);
+    } = await axios.get(`https://api.collegefootballdata.com/games?year=${year}&seasonType=regular&team=${team}`)
+        .catch(function (err) {
+            printError()
+        });
     return data;
 };
 
@@ -33,8 +36,16 @@ async function getWeek(year, week, team) {
     return data;
 };
 
-//Function to create a cell for season data
-const createCell = (stat, data, home, win) => {
+//clears previous search results
+const removeItems = (targets) => {
+    const items = document.querySelectorAll(targets);
+    for (let item of items) {
+        item.remove();
+    };
+}
+
+//create a cell for season data
+const createCell = (stat, data, home) => {
     const cell = document.createElement("td");
     const {
         week,
@@ -42,8 +53,6 @@ const createCell = (stat, data, home, win) => {
         home_team
     } = data;
     cell.textContent = stat;
-    cell.style.cursor = "pointer";
-    cell.classList.add("item");
     cell.addEventListener("click", async function (e) {
         const searchTeam = home ? home_team : away_team;
         const [teamData] = await getWeek(inputContent.year, week, searchTeam);
@@ -58,16 +67,20 @@ const createCell = (stat, data, home, win) => {
     return cell;
 }
 
+//create rows for season data
 const createRow = (data, home, win, cells) => {
     const row = document.createElement("tr");
     for (const cell of cells) {
-        const newCell = createCell(cell, data, home, win);
+        const newCell = createCell(cell, data, home);
         row.appendChild(newCell)
     }
+    row.style.cursor = "pointer";
+    row.classList.add("item")
     row.classList.add(win ? "win" : "loss");
     return row;
 }
 
+//create generic text element
 const createTextElement = (type, content, parent) => {
     const element = document.createElement(type);
     element.textContent = content;
@@ -86,12 +99,14 @@ const formatDate = (date) => {
     return formattedDate.toLocaleDateString(undefined, options)
 }
 
+const printError = () => {
+    document.querySelector(".season-record").textContent = "Please enter a valid school and year";
+    return;
+};
+
 //Populate single game matchup stats
 const gameMatchup = (data, details, homeGame) => {
-    const summaries = document.querySelectorAll(".summary");
-    for (let summary of summaries) {
-        summary.remove();
-    };
+    removeItems(".summary")
     const detailsSection = document.querySelector(".details")
     const {
         start_date,
@@ -122,6 +137,7 @@ const gameMatchup = (data, details, homeGame) => {
     let resultsContent = (homeGame && home_points > away_points) || (!homeGame && away_points > home_points) ? `${searchedTeam} Victory` : `${searchedTeam} Loss`;
     createTextElement("p", resultsContent, gameSummary);
 
+    //makes score table for four quarters
     const scoreTable = document.createElement("table");
     scoreTable.classList.add("score-table")
     const tableHeading = document.createElement("thead");
@@ -130,7 +146,6 @@ const gameMatchup = (data, details, homeGame) => {
     createTextElement("th", `${home_team}`, tableHeading);
     createTextElement("th", `${away_team}`, tableHeading);
     gameSummary.appendChild(scoreTable);
-    //makes score table
     for (let i = 1; i < 5; i++) {
         const row = document.createElement("tr")
         scoreTable.appendChild(row);
@@ -155,8 +170,10 @@ const gameMatchup = (data, details, homeGame) => {
         makeMatchupHistory(data);
     });
 };
+
 //populate summary of matchup history
 const makeMatchupHistory = (data) => {
+    removeItems(".summary");
     const {
         team1,
         team2,
@@ -165,13 +182,9 @@ const makeMatchupHistory = (data) => {
         ties,
         games
     } = data;
-    const summaries = document.querySelectorAll(".summary");
-    for (let summary of summaries) {
-        summary.remove();
-    };
+    const detailsSection = document.querySelector(".details")
     const matchupHistory = document.createElement("div");
     matchupHistory.classList.add("summary")
-    const detailsSection = document.querySelector(".details")
     detailsSection.appendChild(matchupHistory);
     createTextElement("h3", `${team1} vs. ${team2} Matchup history`, matchupHistory);
     createTextElement("p", `${team1} has ${team1Wins} wins, ${team2Wins} losses, and ${ties} ties against ${team2}`, matchupHistory);
@@ -190,7 +203,13 @@ const makeMatchupHistory = (data) => {
 
 //Create table of season data
 const populateSeason = (season) => {
-    console.log(season);
+    const recordHeading = document.querySelector(".season-record");
+    if (season.length === 0) {
+        printError();
+        return;
+    };
+    let wins = 0;
+    let losses = 0;
     for (let game of season) {
         const {
             week,
@@ -201,9 +220,15 @@ const populateSeason = (season) => {
         } = game;
         const homeGame = home_team === inputContent.school ? true : false;
         const win = (homeGame && home_points > away_points) || (!homeGame && away_points > home_points) ? true : false;
+        if (win) {
+            wins++
+        } else {
+            losses++
+        }
         const row = createRow(game, homeGame, win, [week, home_team, away_team, home_points, away_points]);
         document.querySelector(".season").appendChild(row);
     };
+    recordHeading.textContent = `${inputContent.school} ${inputContent.year} Season: ${wins} - ${losses}`;
 };
 
 
@@ -211,14 +236,12 @@ const form = document.querySelector(".form");
 
 form.addEventListener("submit", (e) => {
     e.preventDefault();
-    let items = document.querySelectorAll(".item");
-    for (let item of items) {
-        item.remove();
-    }
-    let summaries = document.querySelectorAll(".summary");
-    for (let summary of summaries) {
-        summary.remove();
-    }
+    removeItems(".item")
+    removeItems(".summary")
     document.querySelector(".details").classList.add("hidden")
+    if (!inputContent.year || !inputContent.school) {
+        printError();
+        return;
+    };
     getSeason(inputContent.year, inputContent.school).then(populateSeason)
 })

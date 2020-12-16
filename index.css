@@ -2,6 +2,7 @@ body {
     background-color: #7ec850;
     background-image: url(http://www.transparenttextures.com/patterns/sprinkles.png);
     text-align: center;
+    font-family: 'Poppins', sans-serif;
 }
 
 input,
@@ -16,13 +17,15 @@ button {
 
 .season {
     background-color: whitesmoke;
-    margin: .8rem .2rem;
 }
 
+.info,
 .details {
     background-color: whitesmoke;
     padding: 1rem 2rem;
     border-radius: 10px;
+    box-shadow: 5px 5px 5px 5px;
+    margin: 1rem;
 }
 
 .hidden {
@@ -33,7 +36,7 @@ button {
     display: flex;
     padding: 4rem 0;
     flex-wrap: wrap;
-    width: 75%;
+    width: 90%;
     margin: 2rem auto;
     justify-content: space-around;
 }
@@ -43,16 +46,23 @@ button {
 }
 
 .win {
-    background-color: #00ff0080;
+    background-color: #00ff0040;
 }
 
 .loss {
+    background-color: #ff000040;
+}
+
+.win :hover {
+    background-color: #00ff0080;
+}
+
+.loss :hover {
     background-color: #ff000080;
 }
 
-table,
-th,
-td {
+thead,
+tr {
     border: 2px solid black;
 }
 
