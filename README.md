@@ -10,6 +10,7 @@ There are no data for scores for each quarter before 2001 - the table in the gam
 ## Built With
 
 * Axios (https://github.com/axios/axios)
+* Google Fonts (https://fonts.google.com)
 * Swagger UI API (https://api.collegefootballdata.com/)
 
 ## Contributing
