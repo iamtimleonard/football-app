@@ -5,6 +5,10 @@ body {
     font-family: 'Poppins', sans-serif;
 }
 
+form {
+    margin: 1rem;
+}
+
 input,
 button {
     border: none;
@@ -13,6 +17,21 @@ button {
 
 button {
     background-color: #989898;
+}
+
+.title {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.football {
+    height: 5rem;
+    width: 5rem;
+    background-color: brown;
+    border-radius: 100% 20%;
+    transform: rotate(45deg);
+    margin: 0 3rem;
 }
 
 .season {
@@ -34,10 +53,10 @@ button {
 
 .container {
     display: flex;
-    padding: 4rem 0;
+    padding: 1rem 0;
     flex-wrap: wrap;
     width: 90%;
-    margin: 2rem auto;
+    margin: 1rem auto;
     justify-content: space-around;
 }
 
@@ -73,6 +92,13 @@ th {
 
 table {
     border-collapse: collapse;
+}
+
+@media (max-width: 850px) {
+    .title {
+        flex-direction: column;
+        align-items: center;
+    }
 }
 
 @media (max-width: 690px) {

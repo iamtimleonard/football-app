@@ -28,14 +28,6 @@ async function getSeason(year, team) {
     return data;
 };
 
-//Get single game data
-async function getWeek(year, week, team) {
-    let {
-        data
-    } = await axios.get(`https://api.collegefootballdata.com/stats/game/advanced?year=${year}&week=${week}&team=${team}`);
-    return data;
-};
-
 //clears previous search results
 const removeItems = (targets) => {
     const items = document.querySelectorAll(targets);
@@ -55,13 +47,11 @@ const createCell = (stat, data, home) => {
     cell.textContent = stat;
     cell.addEventListener("click", async function (e) {
         const searchTeam = home ? home_team : away_team;
-        const [teamData] = await getWeek(inputContent.year, week, searchTeam);
-        console.log(teamData);
         let summaries = document.querySelectorAll(".game-summary");
         for (let summary of summaries) {
             summary.remove();
         };
-        gameMatchup(data, teamData, home);
+        gameMatchup(data, home);
         document.querySelector(".details").classList.remove("hidden");
     });
     return cell;
@@ -105,7 +95,7 @@ const printError = () => {
 };
 
 //Populate single game matchup stats
-const gameMatchup = (data, details, homeGame) => {
+const gameMatchup = (data, homeGame) => {
     removeItems(".summary")
     const detailsSection = document.querySelector(".details")
     const {
@@ -118,11 +108,9 @@ const gameMatchup = (data, details, homeGame) => {
         away_line_scores
     } = data;
 
-    const {
-        opponent
-    } = details
     //keep track of searched team if user changes input
     const searchedTeam = homeGame ? home_team : away_team;
+    const opponent = homeGame ? away_team : home_team;
 
     const gameSummary = document.createElement("div");
     gameSummary.classList.add("summary");
@@ -150,8 +138,8 @@ const gameMatchup = (data, details, homeGame) => {
         const row = document.createElement("tr")
         scoreTable.appendChild(row);
         createTextElement("td", `${i}`, row);
-        createTextElement("td", `${home_line_scores[i-1]}`, row);
-        createTextElement("td", `${away_line_scores[i-1]}`, row);
+        createTextElement("td", `${!home_line_scores[i-1] ? "No data" : home_line_scores[i-1]}`, row);
+        createTextElement("td", `${!away_line_scores[i-1] ? "No data" : away_line_score[i-1]}`, row);
     }
     const totalsRow = document.createElement("tr");
     scoreTable.appendChild(totalsRow);
@@ -218,7 +206,7 @@ const populateSeason = (season) => {
             away_points,
             home_points,
         } = game;
-        const homeGame = home_team === inputContent.school ? true : false;
+        const homeGame = home_team.toUpperCase() == inputContent.school.toUpperCase() ? true : false;
         const win = (homeGame && home_points > away_points) || (!homeGame && away_points > home_points) ? true : false;
         if (win) {
             wins++
@@ -228,9 +216,8 @@ const populateSeason = (season) => {
         const row = createRow(game, homeGame, win, [week, home_team, away_team, home_points, away_points]);
         document.querySelector(".season").appendChild(row);
     };
-    recordHeading.textContent = `${inputContent.school} ${inputContent.year} Season: ${wins} - ${losses}`;
+    recordHeading.textContent = `${inputContent.school.toUpperCase()} ${inputContent.year} SEASON: ${wins} - ${losses}`;
 };
-
 
 const form = document.querySelector(".form");
 
