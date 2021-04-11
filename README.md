@@ -1,3 +1,4 @@
+# CURRENTLY BROKEN DUE TO CHANGES IN API
 # College Football Scores Search App
 
 This app is designed using the API found at https://api.collegefootballdata.com/. Search Division I colleges and specify a season to retrieve the season results. Click through to see the game stats and matchup history between the two schools.
