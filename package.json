@@ -1,0 +1,32 @@
+{
+  "name": "football-app",
+  "version": "1.0.0",
+  "description": "Query for hisotrical college football data",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iamtimleonard/football-app.git"
+  },
+  "keywords": [
+    "football",
+    "foosball"
+  ],
+  "author": "iamtimleonard",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/iamtimleonard/football-app/issues"
+  },
+  "homepage": "https://github.com/iamtimleonard/football-app#readme",
+  "dependencies": {
+    "dotenv": "^16.3.1"
+  },
+  "engines": {
+    "node": "^20.10.0",
+    "npm": "8.19.3"
+  }
+}
